@@ -44,8 +44,8 @@ int main(int argc, char** argv) {
         int countStudentperThread = div_up(num_students, countThreadforProces);
 
         for (int i = (rank - 1) * countStudentperThread; i < countStudentperThread + (rank - 1) * countStudentperThread - 1; ++i) {
-            MPI_Recv(&ticketfor, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-            MPI_Send(&students[i], 1, MPI_INT,rank,i, MPI_COMM_WORLD);
+            MPI_Recv(&ticketfor, 1, MPI_INT, rank, i, MPI_COMM_WORLD, &status);
+            MPI_Send(&students[i], 1, MPI_INT,rank,i*1000, MPI_COMM_WORLD);
             
             
             std::cout << ticketfor << std::endl;
@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
         int PassStudent;
         
         for (int i = (rank - 1) * countStudentperThread; i < countStudentperThread + (rank - 1) * countStudentperThread - 1; ++i) {
-            MPI_Recv(&PassStudent, 1, MPI_INT, rank, i, MPI_COMM_WORLD, &status);
+            MPI_Recv(&PassStudent, 1, MPI_INT, rank, i*1000, MPI_COMM_WORLD, &status);
             std::cout << "Conductor: Student " << PassStudent << " ticket: " << ticket[PassStudent] << ", you can enter.\n";
         }
     }
